@@ -1,6 +1,6 @@
 # SABSI Rate Analysis (Australia, 2010–2023)
 
-This project analyzes time-series data on Staphylococcus aureus bloodstream infections (SABSI) in Australian hospitals using Python. 
+This project analyzes time-series data on Staphylococcus Aureus Bloodstream Infections (SABSI) in Australian hospitals using Python. 
 The goal is to identify infection trends over time, quantify yearly changes, and visualize the impact of events like COVID-19.
 
 ## 📁 Dataset
