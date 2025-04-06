@@ -8,35 +8,32 @@ Created on Fri Apr  4 00:21:57 2025
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-
-# File path
 file_path = "C:/Users/vedav/Downloads/MyHospitals-SABSI-summary-tables-2023-24.xlsx"
 
-# Check available sheets
+# Viewing available sheets within the Excel file downloaded from the Australian Government's health statistics website.
 sheet_name = pd.ExcelFile(file_path).sheet_names
 print("Available Sheets:", sheet_name)
 
-# Load Table 2 (Time-series data)
+# Loading Table - 2 (Time - Series Data)
 table2 = pd.read_excel(file_path, sheet_name="Table 2", header=1)
 
-# Cleaning the sheet
+# Cleaning the sheet. Many values were either missing or jumbled with variable names instead of values.
 table2 = table2.dropna(how="all", axis=1)  
 table2 = table2.dropna(subset=[table2.columns[0]], how="all")   
 table2 = table2.rename(columns={table2.columns[0]: "Metric:"})
 table2.columns = [col.split("–")[0] if "–" in str(col) else col for col in table2.columns]
 table2 = table2.replace("n.p.", pd.NA)  # Replace "n.p." with NaN
 
-# Examine SABSI trends over time
-# Find the row index of "All SABSI cases"
+# Examining SABSI trends over time.
 target_idx = table2.index[table2["Metric:"] == "All SABSI cases"][0]
 
-# Get the RATES (2 rows below "All SABSI cases"), skipping the "Metric:" column
+# Get the RATES which are 2 rows below the "All SABSI cases"), skipping the "Metrics" column. 
 rates_row = table2.iloc[target_idx + 2, 1:]   
 
-# Convert to numeric values
+# Converting to numeric values to perform Regression and then later, the graphical depiction of my analysis.
 rates = pd.to_numeric(rates_row, errors='coerce')  
 
-# Extract years from column names (excluding "Metric:")
+# Extracting years from column names (excluding "Metric:")
 years = [int(col.split()[-1]) for col in table2.columns[1:]]  
 
 # Calculating the Regression of the Rates over time to ascertain whether the 
@@ -48,7 +45,6 @@ print("The slope is:", slope)
 
 # Adding Summary Statistics to derieve further insights, providing a numerical
 # snapshot to complement the trend line.
-# Summary Statistics
 mean_rate = rates.mean()
 median_rate = rates.median()
 std_rate = rates.std()
